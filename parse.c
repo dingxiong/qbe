@@ -41,31 +41,31 @@ enum {
 	Tfunc,
 	Ttype,
 	Tdata,
-	Talign,
-	Tl,
-	Tw,
-	Th,
-	Tb,
-	Td,
-	Ts,
-	Tz,
+	Talign, // "align" keyword
+	Tl, // long type: 'l'
+	Tw, // word type: 'w'
+	Th, // half word: 'h'
+	Tb, // byte: 'b'
+	Td, // double float keyword: 'd'
+	Ts, // single float keyword: 's'
+	Tz, // TODO: where is it used? Only find it inside kwmap.
 
-	Tint,
-	Tflts,
-	Tfltd,
+	Tint,  // integer number: ex 3
+	Tflts, // single float number: ex 3.14
+	Tfltd, // double float number: ex 3.14
 	Ttmp,
 	Tlbl,
-	Tglo,
-	Ttyp,
-	Tstr,
+	Tglo, // globals: symbols start with sigil $.
+	Ttyp, // user defined Aggregation Types: symbols start with sigil :.
+	Tstr, 
 
 	Tplus,
-	Teq,
+	Teq, // equal sign: = 
 	Tcomma,
 	Tlparen,
-	Trparen,
-	Tlbrace,
-	Trbrace,
+	Trparen, 
+	Tlbrace, // '{'
+	Trbrace, // '}'
 	Tnl,
 	Tdots,
 	Teof,
@@ -73,6 +73,8 @@ enum {
 	Ntok
 };
 
+// This is a sparse map. 
+// It is called designated initializers.
 static char *kwmap[Ntok] = {
 	[Tloadw] = "loadw",
 	[Tloadl] = "loadl",
@@ -116,7 +118,14 @@ static struct {
 	char chr;
 	double fltd;
 	float flts;
+
+  // Similar to the str field below.
 	int64_t num;
+  
+  // str field will be set to the current/last identifier. It won't be set if 
+  // the current token is some symbols such as "=", so when parsing `$abc = `.
+  // str = "abc". See the lex() function. This is useful when you want to 
+  // consume two consequent tokens and want the meaningful identifier in it.
 	char *str;
 } tokval;
 static int lnum;
@@ -972,7 +981,7 @@ parsedat(void cb(Dat *), int export)
 	d.isref = 0;
 	d.export = export;
 	cb(&d);
-	if (nextnl() != Tglo || nextnl() != Teq)
+	if (nextnl() != Tglo || nextnl() != Teq) // read this line carefully. If successful, it will consume two tokens.
 		err("data name, then = expected");
 	strcpy(s, tokval.str);
 	t = nextnl();
@@ -984,6 +993,8 @@ parsedat(void cb(Dat *), int export)
 		cb(&d);
 		t = nextnl();
 	}
+  // Man. the name field is processed after `align` keyword even the latter is 
+  // defined later in the grammar. Anyway, as long as the author is happy.
 	d.type = DName;
 	d.u.str = s;
 	cb(&d);
@@ -1032,6 +1043,14 @@ Done:
 	cb(&d);
 }
 
+/*
+ * Parse a translation unit.
+ *
+ * f: the opened file no. It can be stdin.
+ * path: the file path or "-" for stdin.
+ * data: A function that handles data sections. It outputs the assembly to the output file on the fly.
+ * func:
+*/
 void
 parse(FILE *f, char *path, void data(Dat *), void func(Fn *))
 {

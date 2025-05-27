@@ -6,6 +6,11 @@ char *gasloc, *gassym;
 void
 gasemitdat(Dat *d, FILE *f)
 {
+  // This variable is static means it is shared across function calls 
+  // It is only set when type = DStart, so I assume for each data statement,
+  // we will have an array of Dat members, and the first one is DStart, and 
+  // processing it will preset the correct `align`. 
+  // TBH, I think this design is bad.
 	static int align;
 	static char *dtoa[] = {
 		[DAlign] = ".align",
@@ -24,6 +29,8 @@ gasemitdat(Dat *d, FILE *f)
 		break;
 	case DName:
 		if (!align)
+      // TODO: the docs says when no alignment is provided, the maximum alignment from the platform is used.
+      // Then why here hardcode 8?
 			fprintf(f, ".align 8\n");
 		if (d->export)
 			fprintf(f, ".globl %s%s\n", gassym, d->u.str);

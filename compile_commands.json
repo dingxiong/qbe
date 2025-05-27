@@ -1,0 +1,398 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/load.o",
+      "load.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/load.c",
+    "output": "/Users/xiongding/code/qbe/obj/load.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/arm64/isel.o",
+      "arm64/isel.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/arm64/isel.c",
+    "output": "/Users/xiongding/code/qbe/obj/arm64/isel.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/parse.o",
+      "parse.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/parse.c",
+    "output": "/Users/xiongding/code/qbe/obj/parse.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/gas.o",
+      "gas.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/gas.c",
+    "output": "/Users/xiongding/code/qbe/obj/gas.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/arm64/abi.o",
+      "arm64/abi.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/arm64/abi.c",
+    "output": "/Users/xiongding/code/qbe/obj/arm64/abi.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/fold.o",
+      "fold.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/fold.c",
+    "output": "/Users/xiongding/code/qbe/obj/fold.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/arm64/emit.o",
+      "arm64/emit.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/arm64/emit.c",
+    "output": "/Users/xiongding/code/qbe/obj/arm64/emit.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/ssa.o",
+      "ssa.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/ssa.c",
+    "output": "/Users/xiongding/code/qbe/obj/ssa.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/amd64/isel.o",
+      "amd64/isel.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/amd64/isel.c",
+    "output": "/Users/xiongding/code/qbe/obj/amd64/isel.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/amd64/sysv.o",
+      "amd64/sysv.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/amd64/sysv.c",
+    "output": "/Users/xiongding/code/qbe/obj/amd64/sysv.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/live.o",
+      "live.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/live.c",
+    "output": "/Users/xiongding/code/qbe/obj/live.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/spill.o",
+      "spill.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/spill.c",
+    "output": "/Users/xiongding/code/qbe/obj/spill.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/cfg.o",
+      "cfg.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/cfg.c",
+    "output": "/Users/xiongding/code/qbe/obj/cfg.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/util.o",
+      "util.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/util.c",
+    "output": "/Users/xiongding/code/qbe/obj/util.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/rega.o",
+      "rega.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/rega.c",
+    "output": "/Users/xiongding/code/qbe/obj/rega.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/main.o",
+      "main.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/main.c",
+    "output": "/Users/xiongding/code/qbe/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/arm64/targ.o",
+      "arm64/targ.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/arm64/targ.c",
+    "output": "/Users/xiongding/code/qbe/obj/arm64/targ.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/amd64/targ.o",
+      "amd64/targ.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/amd64/targ.c",
+    "output": "/Users/xiongding/code/qbe/obj/amd64/targ.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/mem.o",
+      "mem.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/mem.c",
+    "output": "/Users/xiongding/code/qbe/obj/mem.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/alias.o",
+      "alias.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/alias.c",
+    "output": "/Users/xiongding/code/qbe/obj/alias.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/copy.o",
+      "copy.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/copy.c",
+    "output": "/Users/xiongding/code/qbe/obj/copy.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-fPIC",
+      "-Wextra",
+      "-std=c99",
+      "-g",
+      "-pedantic",
+      "-c",
+      "-o",
+      "obj/amd64/emit.o",
+      "amd64/emit.c"
+    ],
+    "directory": "/Users/xiongding/code/qbe",
+    "file": "/Users/xiongding/code/qbe/amd64/emit.c",
+    "output": "/Users/xiongding/code/qbe/obj/amd64/emit.o"
+  }
+]

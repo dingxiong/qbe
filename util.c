@@ -89,6 +89,8 @@ alloc(size_t n)
 	return pool[nptr++] = emalloc(n);
 }
 
+
+// TODO: figure out how allocation  works
 void
 freeall()
 {
