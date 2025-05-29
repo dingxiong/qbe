@@ -3,3 +3,4 @@ config.h
 .comfile
 *.out
 .cache
+out.s

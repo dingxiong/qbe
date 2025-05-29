@@ -137,6 +137,19 @@ enum O {
 	NOp,
 };
 
+/**
+ * This defines Jump enum. 
+ * The first part is various return types:
+ * Jxxx,
+ * Jret0,
+ * Jretw
+ *
+ * The second part is 
+ * Jjmp
+ * Jjnz
+ *
+ * TODO: what the rest are?
+ */
 enum J {
 	Jxxx,
 #define JMPS(X)                                 \
@@ -189,12 +202,27 @@ enum Class {
 #define KWIDE(k) ((k)&1)
 #define KBASE(k) ((k)>>1)
 
+/*
+ * Metadata for an opcode in the low-level instruction
+ *
+ * name: name of the opcode.
+ * argcls: 2D array defines operand class constraints for the opcode. Why 2D? because the op has at most 2 operands.
+ * canfold: can evaluate at compile time or not.
+ * */
 struct Op {
 	char *name;
 	short argcls[2][4];
 	int canfold;
 };
 
+/*
+ * Low-level instruction.
+ *
+ * op: opcode
+ * to: destination
+ * arg[2]: up to 2 arguments. Most popular 3-address instruction format.
+ * cls:
+ * */
 struct Ins {
 	uint op:30;
 	Ref to;
@@ -213,8 +241,8 @@ struct Phi {
 
 struct Blk {
 	Phi *phi;
-	Ins *ins;
-	uint nins;
+	Ins *ins; // instruction list.
+	uint nins; // number of instruction
 	struct {
 		short type;
 		Ref arg;
@@ -223,11 +251,12 @@ struct Blk {
 	Blk *s2;
 	Blk *link;
 
-	uint id;
+	uint id; // block id. Auto incremental.
 	uint visit;
 
 	Blk *idom;
-	Blk *dom, *dlink;
+	Blk *dom; 
+  Blk *dlink; // next element in the linked list.
 	Blk **fron;
 	uint nfron;
 
@@ -313,7 +342,7 @@ struct Con {
 		double d;
 		float s;
 	} bits;
-	char flt; /* 1 to print as s, 2 to print as d */
+	char flt; /* 1 to print as s, 2 to print as d */ // we always memset Con, so this field has default value 0.
 	char local;
 };
 
@@ -329,7 +358,7 @@ struct Addr { /* amd64 addressing */
 struct Fn {
 	Blk *start;
 	Tmp *tmp;
-	Con *con;
+	Con *con; // list of constant in the function arguments.
 	Mem *mem;
 	int ntmp;
 	int ncon;
@@ -341,14 +370,14 @@ struct Fn {
 	bits reg;
 	int slot;
 	char export;
-	char vararg;
+	char vararg; // 1: is variadic; 0: not variadic.
 	char dynalloc;
 	char name[NString];
 };
 
 struct Typ {
 	char name[NString];
-	int dark;
+	int dark; // meaning this type is opaque or not
 	int align;
 	uint64_t size;
 	uint nunion;

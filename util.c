@@ -30,7 +30,9 @@ enum {
 	IMask = (1<<IBits) - 1,
 };
 
+// global array storing the new types defined in the translation unit.
 Typ *typ;
+
 Ins insb[NIns], *curi;
 
 static void *ptr[NPtr];
@@ -156,6 +158,7 @@ vgrow(void *vp, ulong len)
 	*(Vec **)vp = v1;
 }
 
+// TODO: what the hell does this function do?
 uint32_t
 intern(char *s)
 {

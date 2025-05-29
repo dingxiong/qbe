@@ -3,6 +3,7 @@
 Blk *
 blknew()
 {
+  // TODO: what the hell make this static? It is not memset to zero?
 	static Blk z;
 	Blk *b;
 
