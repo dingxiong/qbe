@@ -99,6 +99,9 @@ rporec(Blk *b, uint x)
 }
 
 /* fill the rpo information */
+/**
+ * rpo: reverse post order
+ */
 void
 fillrpo(Fn *f)
 {
@@ -179,7 +182,7 @@ filldom(Fn *fn)
 	for (b=fn->start; b; b=b->link)
 		if ((d=b->idom)) {
 			assert(d != b);
-			b->dlink = d->dom;
+			b->dlink = d->dom; // so this will also change the block linked list
 			d->dom = b;
 		}
 }

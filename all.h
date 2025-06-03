@@ -247,15 +247,15 @@ struct Blk {
 		short type;
 		Ref arg;
 	} jmp;
-	Blk *s1;
+	Blk *s1; // s1 and s2 are the two targets of jnz.
 	Blk *s2;
-	Blk *link;
+	Blk *link; // next block in the same function
 
-	uint id; // block id. Auto incremental.
+	uint id; // block id. Filled with RPO
 	uint visit;
 
-	Blk *idom;
-	Blk *dom; 
+	Blk *idom; // immediate dominator
+	Blk *dom;  // immediate dominatee
   Blk *dlink; // next element in the linked list.
 	Blk **fron;
 	uint nfron;
@@ -519,7 +519,7 @@ void loadopt(Fn *);
 /* ssa.c */
 void filluse(Fn *);
 void fillpreds(Fn *);
-void fillrpo(Fn *);
+void fillrpo(Fn *); // What the hell? It is already declared above.
 void ssa(Fn *);
 void ssacheck(Fn *);
 
