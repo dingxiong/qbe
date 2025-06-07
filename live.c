@@ -34,6 +34,9 @@ bset(Ref r, Blk *b, int *nlv, Tmp *tmp)
 
 /* liveness analysis
  * requires rpo computation
+ *
+ * A variable v is live at point p if and only if there is a path 
+ * from p to a use of v along which v is not redefined.
  */
 void
 filllive(Fn *f)
@@ -53,7 +56,7 @@ filllive(Fn *f)
 	}
 	chg = 1;
 Again:
-	for (n=f->nblk-1; n>=0; n--) {
+	for (n=f->nblk-1; n>=0; n--) { // from child to parent
 		b = f->rpo[n];
 
 		bscopy(u, b->out);

@@ -64,8 +64,8 @@ enum {
 };
 
 struct BSet {
-	uint nt;
-	bits *t;
+	uint nt; // number of bits. Note, not bytes.
+	bits *t; 
 };
 
 struct Ref {
@@ -262,7 +262,7 @@ struct Blk {
 
 	Blk **pred;
 	uint npred;
-	BSet in[1], out[1], gen[1];
+	BSet in[1], out[1], gen[1]; // these variables will populated during liveness analysis.
 	int nlive[2];
 	int loop;
 	char name[NString];
@@ -360,13 +360,13 @@ struct Fn {
 	Tmp *tmp;
 	Con *con; // list of constant in the function arguments.
 	Mem *mem;
-	int ntmp;
+	int ntmp; // number of temp variables used inside this function
 	int ncon;
 	int nmem;
 	uint nblk;
 	int retty; /* index in typ[], -1 if no aggregate return */
 	Ref retr;
-	Blk **rpo;
+	Blk **rpo; // reverse post order
 	bits reg;
 	int slot;
 	char export;

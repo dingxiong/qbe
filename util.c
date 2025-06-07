@@ -407,9 +407,9 @@ blit(Ref rdst, uint doff, Ref rsrc, uint sz, Fn *fn)
 void
 bsinit(BSet *bs, uint n)
 {
-	n = (n + NBit-1) / NBit;
+	n = (n + NBit-1) / NBit; // round up the number of 8 bytes. Support NBit = 64 bits.
 	bs->nt = n;
-	bs->t = alloc(n * sizeof bs->t[0]);
+	bs->t = alloc(n * sizeof bs->t[0]); // sizeof bs->t[0] = 8.
 }
 
 MAKESURE(NBit_is_64, NBit == 64);
