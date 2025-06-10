@@ -336,7 +336,7 @@ struct Con {
 		CBits,
 		CAddr,
 	} type;
-	uint32_t label;
+	uint32_t label; // set when type = CAddr
 	union {
 		int64_t i;
 		double d;
@@ -361,7 +361,7 @@ struct Fn {
 	Con *con; // list of constant in the function arguments.
 	Mem *mem;
 	int ntmp; // number of temp variables used inside this function
-	int ncon;
+	int ncon; // number of constants
 	int nmem;
 	uint nblk;
 	int retty; /* index in typ[], -1 if no aggregate return */
