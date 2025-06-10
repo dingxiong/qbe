@@ -13,6 +13,13 @@
 /*********************/
 
 /* Arithmetic and Bits */
+/*
+ O(add,     T(w,l,s,d, w,l,s,d), 1) X(2, 1, 0)
+ becomes 
+ [Oadd]={"add", { {[Kw]=Kw, [Kl]=Kl, [Ks]=Ks, [Kd]=Kd}, {[Kw]=Kw, [Kl]=Kl, [Ks]=Ks, [Kd]=Kd} }, 1},
+ in parser. X part is not used, the `1` of the 3rd argument of `O` denotes `canfold`
+
+ * */
 O(add,     T(w,l,s,d, w,l,s,d), 1) X(2, 1, 0)
 O(sub,     T(w,l,s,d, w,l,s,d), 1) X(2, 1, 0)
 O(div,     T(w,l,s,d, w,l,s,d), 1) X(0, 0, 0)
