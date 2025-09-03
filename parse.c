@@ -18,7 +18,7 @@ typedef enum {
 	PPhi,
 	PIns,
 	PEnd,
-} PState;
+} PState; // parse state
 
 enum {
 	Txxx = 0,
@@ -32,7 +32,7 @@ enum {
 	Talloc2,
 
 	Tcall,
-	Tenv,
+	Tenv, // keyword: 'env'
 	Tphi,
 	Tjmp,
 	Tjnz,
@@ -41,31 +41,31 @@ enum {
 	Tfunc,
 	Ttype,
 	Tdata,
-	Talign,
-	Tl,
-	Tw,
-	Th,
-	Tb,
-	Td,
-	Ts,
-	Tz,
+	Talign, // "align" keyword
+	Tl, // long type: 'l'
+	Tw, // word type: 'w'
+	Th, // half word: 'h'
+	Tb, // byte: 'b'
+	Td, // double float keyword: 'd'
+	Ts, // single float keyword: 's'
+	Tz, // TODO: where is it used? Only find it inside kwmap.
 
-	Tint,
-	Tflts,
-	Tfltd,
-	Ttmp,
-	Tlbl,
-	Tglo,
-	Ttyp,
-	Tstr,
+	Tint,  // integer number: ex 3
+	Tflts, // single float number: ex 3.14
+	Tfltd, // double float number: ex 3.14
+	Ttmp, // function-scope temporaries: symbols start with %.
+	Tlbl, // block lablel: @
+	Tglo, // globals: symbols start with sigil $.
+	Ttyp, // user defined Aggregation Types: symbols start with sigil :.
+	Tstr, 
 
 	Tplus,
-	Teq,
+	Teq, // equal sign: = 
 	Tcomma,
 	Tlparen,
-	Trparen,
-	Tlbrace,
-	Trbrace,
+	Trparen, 
+	Tlbrace, // '{'
+	Trbrace, // '}'
 	Tnl,
 	Tdots,
 	Teof,
@@ -73,6 +73,8 @@ enum {
 	Ntok
 };
 
+// This is a sparse map. 
+// It is called designated initializers.
 static char *kwmap[Ntok] = {
 	[Tloadw] = "loadw",
 	[Tloadl] = "loadl",
@@ -116,7 +118,14 @@ static struct {
 	char chr;
 	double fltd;
 	float flts;
+
+  // Similar to the str field below.
 	int64_t num;
+  
+  // str field will be set to the current/last identifier. It won't be set if 
+  // the current token is some symbols such as "=", so when parsing `$abc = `.
+  // str = "abc". See the lex() function. This is useful when you want to 
+  // consume two consequent tokens and want the meaningful identifier in it.
 	char *str;
 } tokval;
 static int lnum;
@@ -126,8 +135,14 @@ static Phi **plink;
 static Blk *curb;
 static Blk **blink;
 static Blk *blkh[BMask+1];
+
+// number of blocks in the current function
 static int nblk;
+
+// What a joke! It use a static variable to store the current function's return type.
 static int rcls;
+
+// Total number of global types.
 static uint ntyp;
 
 void
@@ -415,7 +430,7 @@ parsecls(int *tyn)
 		err("invalid class specifier");
 	case Ttyp:
 		*tyn = findtyp(ntyp);
-		return 4;
+		return 4; // TODO: man, why hard code 4 here? why not add to the enum list?
 	case Tw:
 		return Kw;
 	case Tl:
@@ -427,6 +442,22 @@ parsecls(int *tyn)
 	}
 }
 
+/*
+ * Parse reference list.
+ *
+ * refl: Abbreviated from reference list, referring to a comma-separated list
+ * of references (like variables, temporaries, environment variables, etc.)
+ * passed as parameters or arguments to a function.
+ *
+ * Input:
+ * arg == 1, it's parsing function arguments.
+ * arg == 0, it's parsing function parameters (e.g., in a function definition).
+ *
+ * Return:
+ * return == 1: variadic argument exits.
+ * return == 0: no variadic argument.
+ *
+ * */
 static int
 parserefl(int arg)
 {
@@ -492,7 +523,7 @@ findblk(char *name)
 	b = blknew();
 	b->id = nblk++;
 	strcpy(b->name, name);
-	b->dlink = blkh[h];
+	b->dlink = blkh[h]; // insert the new node at the head.
 	blkh[h] = b;
 	return b;
 }
@@ -536,6 +567,7 @@ parseline(PState ps)
 	case Ttmp:
 		break;
 	case Tlbl:
+    // TODO: why findblk here? I assume we always create a new block here.
 		b = findblk(tokval.str);
 		if (curb && curb->jmp.type == Jxxx) {
 			closeblk();
@@ -580,6 +612,9 @@ parseline(PState ps)
 		if (curb->jmp.type != Jjmp) {
 			expect(Tcomma);
 			expect(Tlbl);
+      // TODO: wait a moment. findblk will also create a new block if it does not exists yet.
+      // So this means it can reference blocks in the lower bottom of the translation unit.
+      // Then, where does it check if all these blocks really exist.
 			curb->s2 = findblk(tokval.str);
 		}
 		if (curb->s1 == curf->start || curb->s2 == curf->start)
@@ -776,6 +811,8 @@ parsefn(int export)
 	curf->ncon = 1; /* first constant must be 0 */
 	curf->tmp = vnew(curf->ntmp, sizeof curf->tmp[0], Pfn);
 	curf->con = vnew(curf->ncon, sizeof curf->con[0], Pfn);
+
+  // TODO: why add all these temp variables?
 	for (i=0; i<Tmp0; ++i)
 		if (T.fpr0 <= i && i < T.fpr0 + T.nfpr)
 			newtmp(0, Kd, curf);
@@ -785,12 +822,15 @@ parsefn(int export)
 	curf->export = export;
 	blink = &curf->start;
 	curf->retty = Kx;
+
+  // TODO: man, are you sick? why peek can have !Tglo, and then immediately error out if next != Tglo.
 	if (peek() != Tglo)
 		rcls = parsecls(&curf->retty);
 	else
 		rcls = 5;
 	if (next() != Tglo)
 		err("function name expected");
+
 	strcpy(curf->name, tokval.str);
 	curf->vararg = parserefl(0);
 	if (nextnl() != Tlbrace)
@@ -904,7 +944,7 @@ parsetyp()
 	if (t == Talign) {
 		if (nextnl() != Tint)
 			err("alignment expected");
-		for (al=0; tokval.num /= 2; al++)
+		for (al=0; tokval.num /= 2; al++) // get the minimal n such that 2^n >= num.
 			;
 		ty->align = al;
 		t = nextnl();
@@ -972,7 +1012,7 @@ parsedat(void cb(Dat *), int export)
 	d.isref = 0;
 	d.export = export;
 	cb(&d);
-	if (nextnl() != Tglo || nextnl() != Teq)
+	if (nextnl() != Tglo || nextnl() != Teq) // read this line carefully. If successful, it will consume two tokens.
 		err("data name, then = expected");
 	strcpy(s, tokval.str);
 	t = nextnl();
@@ -984,6 +1024,8 @@ parsedat(void cb(Dat *), int export)
 		cb(&d);
 		t = nextnl();
 	}
+  // Man. the name field is processed after `align` keyword even the latter is 
+  // defined later in the grammar. Anyway, as long as the author is happy.
 	d.type = DName;
 	d.u.str = s;
 	cb(&d);
@@ -1032,6 +1074,14 @@ Done:
 	cb(&d);
 }
 
+/*
+ * Parse a translation unit.
+ *
+ * f: the opened file no. It can be stdin.
+ * path: the file path or "-" for stdin.
+ * data: A function that handles data sections. It outputs the assembly to the output file on the fly.
+ * func:
+*/
 void
 parse(FILE *f, char *path, void data(Dat *), void func(Fn *))
 {
@@ -1052,7 +1102,7 @@ parse(FILE *f, char *path, void data(Dat *), void func(Fn *))
 		case Texport:
 			export = 1;
 			t = nextnl();
-			if (t == Tfunc) {
+			if (t == Tfunc) { // look at this hell trick. 
 		case Tfunc:
 				func(parsefn(export));
 				break;

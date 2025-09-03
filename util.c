@@ -30,7 +30,9 @@ enum {
 	IMask = (1<<IBits) - 1,
 };
 
+// global array storing the new types defined in the translation unit.
 Typ *typ;
+
 Ins insb[NIns], *curi;
 
 static void *ptr[NPtr];
@@ -89,6 +91,8 @@ alloc(size_t n)
 	return pool[nptr++] = emalloc(n);
 }
 
+
+// TODO: figure out how allocation  works
 void
 freeall()
 {
@@ -154,6 +158,7 @@ vgrow(void *vp, ulong len)
 	*(Vec **)vp = v1;
 }
 
+// TODO: what the hell does this function do?
 uint32_t
 intern(char *s)
 {
@@ -402,9 +407,9 @@ blit(Ref rdst, uint doff, Ref rsrc, uint sz, Fn *fn)
 void
 bsinit(BSet *bs, uint n)
 {
-	n = (n + NBit-1) / NBit;
+	n = (n + NBit-1) / NBit; // round up the number of 8 bytes. Support NBit = 64 bits.
 	bs->nt = n;
-	bs->t = alloc(n * sizeof bs->t[0]);
+	bs->t = alloc(n * sizeof bs->t[0]); // sizeof bs->t[0] = 8.
 }
 
 MAKESURE(NBit_is_64, NBit == 64);

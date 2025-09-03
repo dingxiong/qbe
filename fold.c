@@ -14,8 +14,8 @@ struct Edge {
 };
 
 static int *val;
-static Edge *flowrk, (*edge)[2];
-static Use **usewrk;
+static Edge *flowrk, (*edge)[2]; // flow worklist
+static Use **usewrk; // SSA Worklist
 static uint nuse;
 
 static int
@@ -42,12 +42,36 @@ latval(Ref r)
 	}
 }
 
+/*
+ * Lattice merge
+ * The rule from any paper/text book is 
+ * 1) Top ^ any = any 
+ * 2) Bottom ^ any = Bottom
+ * 3) c1 ^ c2 = c1 == c2 ? c1 : Bottom.
+ * Here, it is logically equivalent. 
+ *
+ * 1) m = Top => v
+ *
+ * 2) m = c1 =>
+ * 2.a) v = Top => m
+ * 2.b) v = c1 => c1 
+ * 2.c) v = c2 => Bottom
+ * 2.d) v = Bottom => Bottom
+ 
+ * 3) m = Bottom, then expression ` xxx ? m : Bot` can be simplified to Bottom.
+ *
+ * So this guys really tried to make his code harder to understand.
+ *
+ * */
 static int
 latmerge(int v, int m)
 {
 	return m == Top ? v : (v == Top || v == m) ? m : Bot;
 }
 
+/*
+ * t: index in array val
+ * */
 static void
 update(int t, int m, Fn *fn)
 {

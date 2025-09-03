@@ -177,8 +177,10 @@ main(int ac, char *av[])
 		break;
 	}
 
+  // Parse file one by one 
 	do {
 		f = av[optind];
+    // So this means that I can give "- - -" in cmd line, and it will parse stdin three times.
 		if (!f || strcmp(f, "-") == 0) {
 			inf = stdin;
 			f = "-";

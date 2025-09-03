@@ -12,16 +12,21 @@ SRCALL   = $(SRC) $(AMD64SRC) $(ARM64SRC)
 AMD64OBJ = $(AMD64SRC:%.c=$(OBJDIR)/%.o)
 ARM64OBJ = $(ARM64SRC:%.c=$(OBJDIR)/%.o)
 OBJ      = $(SRC:%.c=$(OBJDIR)/%.o) $(AMD64OBJ) $(ARM64OBJ)
+OBJI     = $(SRC:%.c=$(OBJDIR)/%.i)
 
 CFLAGS += -Wall -fPIC -Wextra -std=c99 -g -pedantic
 
-$(OBJDIR)/$(BIN): $(OBJ) $(OBJDIR)/timestamp
+$(OBJDIR)/$(BIN): $(OBJ) $(OBJI) $(OBJDIR)/timestamp
 	@test -z "$(V)" || echo "ld $@"
 	$(V)$(CC) $(LDFLAGS) $(OBJ) -o $@
 
 $(OBJDIR)/%.o: %.c $(OBJDIR)/timestamp
 	@test -z "$(V)" || echo "cc $<"
 	$(V)$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.i: %.c $(OBJDIR)/timestamp
+	@test -z "$(V)" || echo "cc $<"
+	$(V)$(CC) $(CFLAGS) -E $< -o $@
 
 $(OBJDIR)/timestamp:
 	@mkdir -p $(OBJDIR)
